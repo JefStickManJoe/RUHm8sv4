@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rowan Blvd 7367</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+body{background:#e8e8e8;display:flex;justify-content:center;min-height:100vh}
+#wrap{width:100%;max-width:430px;background:#f5f5f7;min-height:100vh;position:relative}
+#lock{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:40px 28px;text-align:center;background:#f5f5f7}
+.lock-emoji{font-size:56px;margin-bottom:14px}
+.lock-title{font-size:24px;font-weight:800;color:#1a1a1a;margin-bottom:4px}
+.lock-sub{font-size:13px;color:#888;margin-bottom:6px}
+.lock-addr{font-size:12px;color:#aaa;margin-bottom:20px}
+.lock-section{font-size:13px;font-weight:700;color:#333;margin-bottom:8px;margin-top:4px}
+#pw-input{width:100%;max-width:270px;padding:13px 16px;border-radius:12px;border:1.5px solid #d0d0d5;font-size:16px;text-align:center;margin-bottom:8px;background:white;outline:none;display:block;margin-left:auto;margin-right:auto}
+#pw-input:focus{border-color:#2e7d32}
+#pw-err{color:#e03c3c;font-size:13px;min-height:18px;margin-bottom:8px}
+#account-sel{width:100%;max-width:270px;padding:12px 16px;border-radius:12px;border:1.5px solid #d0d0d5;font-size:15px;margin-bottom:14px;background:white;display:block;margin-left:auto;margin-right:auto}
+#unlock-btn{width:270px;padding:13px;border-radius:12px;background:#2e7d32;color:white;border:none;font-size:16px;font-weight:700;cursor:pointer;display:block;margin:0 auto}
+#unlock-btn:active{opacity:.85}
+#app{display:none;flex-direction:column;min-height:100vh}
+.topbar{background:white;padding:12px 16px 10px;text-align:center;border-bottom:1px solid #e0e0e0;position:sticky;top:0;z-index:20}
+.topbar-title{font-size:14px;font-weight:700;color:#1a1a1a}
+.topbar-sub{font-size:11px;color:#888;margin-top:1px}
+.content{flex:1;padding:14px;padding-bottom:90px}
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;display:flex;background:white;border-top:1px solid #e0e0e0;z-index:20;padding-bottom:env(safe-area-inset-bottom,0)}
+.tab{flex:1;padding:8px 4px 7px;border:none;background:none;cursor:pointer;font-size:9px;color:#999;text-align:center}
+.tab .ti{display:block;font-size:21px;margin-bottom:2px}
+.tab.on{color:#2e7d32;font-weight:700}
+.pg{display:none}.pg.on{display:block}
+h2{font-size:20px;font-weight:700;color:#1a1a1a;margin-bottom:14px}
+.card{background:white;border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid #e5e5e5}
+.card h3{font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px}
+.sl{font-size:10px;font-weight:700;color:#aaa;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;margin-top:4px}
+.row{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f0f0f0}
+.row:last-child{border:none}
+.btn{padding:9px 16px;border-radius:10px;border:1px solid #d0d0d5;background:white;font-size:13px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.btn:active{opacity:.7}
+.btn-green{background:#2e7d32;color:white;border-color:#2e7d32}
+.btn-red{background:#c62828;color:white;border-color:#c62828}
+.btn-blue{background:#1565c0;color:white;border-color:#1565c0}
+.btn-orange{background:#e65100;color:white;border-color:#e65100}
+.btn-sm{padding:6px 12px;font-size:11px}
+.btn-full{width:100%}
+.st-home{background:#e8f5e9;color:#1b5e20}
+.st-out{background:#fff3e0;color:#e65100}
+.st-away{background:#fce4ec;color:#c62828}
+.sb{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.inp{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d0d0d5;font-size:14px;margin-bottom:8px;background:white;outline:none}
+.inp:focus{border-color:#2e7d32}
+.sel{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #d0d0d5;font-size:14px;margin-bottom:8px;background:white}
+.lbl{font-size:11px;font-weight:600;color:#666;display:block;margin-bottom:3px;margin-top:10px}
+.cal-header{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.cal-day-label{text-align:center;font-size:9px;color:#aaa;font-weight:600;padding:3px 0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-day{min-height:36px;border-radius:8px;border:1px solid #ebebeb;background:white;cursor:pointer;padding:3px 4px}
+.cal-day:hover{background:#f0f9f0}
+.cal-day.today{border:2px solid #2e7d32}
+.cal-day.selected{background:#e8f5e9;border-color:#2e7d32}
+.cal-day-num{font-size:10px;color:#555;font-weight:500}
+.cal-dot{width:5px;height:5px;border-radius:50%;margin:1px auto 0;display:block}
+.cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:50;align-items:flex-end;justify-content:center}
+.overlay.open{display:flex}
+.sheet{background:white;border-radius:22px 22px 0 0;padding:20px 18px 44px;width:100%;max-width:430px;max-height:90vh;overflow-y:auto}
+.sheet-handle{width:36px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 16px}
+.sheet h3{font-size:17px;font-weight:700;margin-bottom:14px;color:#1a1a1a}
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:#1c1c1e;color:white;padding:9px 18px;border-radius:18px;font-size:13px;font-weight:600;opacity:0;transition:opacity .3s;pointer-events:none;z-index:999;white-space:nowrap;max-width:90%}
+.toast.show{opacity:1}
+.ann-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:700;margin-bottom:4px}
+.ann-hi{background:#ffebee;color:#b71c1c}
+.ann-med{background:#fff8e1;color:#c77d00}
+.ann-lo{background:#e8f5e9;color:#1b5e20}
+.doc-item{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid #f0f0f0}
+.doc-item:last-child{border:none}
+.person-check{display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:10px;border:1.5px solid #e0e0e0;cursor:pointer;font-size:12px;font-weight:600;margin:3px;transition:all .15s}
+.person-check.selected{border-color:var(--pc);background:var(--pbg);color:var(--pc)}
+</style>
+</head>
+<body>
+<div id="wrap">
+
+<!-- LOCK / ACCOUNT SELECT -->
+<div id="lock">
+  <div class="lock-emoji">🐰</div>
+  <div class="lock-title">Rowan Blvd</div>
+  <div class="lock-sub">Room 7367</div>
+  <div class="lock-addr">Rowan Boulevard, Glassboro NJ</div>
+
+  <div class="lock-section">Who are you?</div>
+  <select id="account-sel">
+    <option value="">Select your name...</option>
+    <option value="Connor">Connor</option>
+    <option value="Nolan">Nolan</option>
+    <option value="Evan (BO)">Evan (BO)</option>
+    <option value="Jack">Jack</option>
+  </select>
+
+  <div class="lock-section">Password</div>
+  <input type="password" id="pw-input" placeholder="Password...">
+  <div id="pw-err"></div>
+  <button id="unlock-btn">Unlock</button>
+</div>
+
+<!-- MAIN APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">Rowan Blvd 7367 🐰</div>
+    <div class="topbar-sub">Glassboro, NJ · <span id="topbar-user"></span></div>
+  </div>
+  <div class="content">
+
+    <!-- HOME -->
+    <div id="pg-home" class="pg on">
+      <h2>Home</h2>
+      <div class="card">
+        <h3>Who's around</h3>
+        <div id="status-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px"></div>
+        <div class="sl">Your status</div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button class="btn btn-green btn-sm" onclick="setStatus('home')">🏠 Home</button>
+          <button class="btn btn-sm" style="background:#fff3e0;border-color:#e65100;color:#e65100" onclick="setStatus('out')">🚪 Out</button>
+          <button class="btn btn-sm" style="background:#fce4ec;border-color:#c62828;color:#c62828" onclick="setStatus('away')">✈️ Away</button>
+        </div>
+        <div id="status-tracker" style="margin-top:10px"></div>
+      </div>
+      <div class="card"><h3>Today</h3><div id="home-today"></div></div>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <h3 style="margin:0">Announcements</h3>
+          <button class="btn btn-sm btn-green" onclick="showPg('ann',4)">See all</button>
+        </div>
+        <div id="home-ann"></div>
+      </div>
+    </div>
+
+    <!-- CALENDAR -->
+    <div id="pg-cal" class="pg">
+      <h2>Calendar</h2>
+      <div class="cal-nav">
+        <button class="btn btn-sm" onclick="prevMonth()">‹</button>
+        <strong id="cal-month-label" style="font-size:15px"></strong>
+        <button class="btn btn-sm" onclick="nextMonth()">›</button>
+      </div>
+      <div class="card" style="padding:10px">
+        <div class="cal-header" id="cal-hdr"></div>
+        <div class="cal-grid" id="cal-grid"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <strong id="cal-sel-label" style="font-size:14px;color:#1a1a1a">Today</strong>
+        <button class="btn btn-sm btn-green" onclick="openSheet('sh-ev')">+ Add event</button>
+      </div>
+      <div id="day-events" class="card"></div>
+      <div class="card" style="margin-top:6px">
+        <div class="sl">Legend</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap" id="legend"></div>
+      </div>
+    </div>
+
+    <!-- CHORES -->
+    <div id="pg-chr" class="pg">
+      <h2>Chores</h2>
+      <button class="btn btn-sm btn-green" style="margin-bottom:12px" onclick="openSheet('sh-achr')">+ Add chore</button>
+      <div id="chore-list"></div>
+    </div>
+
+    <!-- DOCS -->
+    <div id="pg-docs" class="pg">
+      <h2>Documents</h2>
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <h3 style="margin:0">Important Docs</h3>
+          <button class="btn btn-sm btn-green" onclick="openSheet('sh-adoc')">+ Add</button>
+        </div>
+        <div id="doc-list"></div>
+      </div>
+    </div>
+
+    <!-- ANNOUNCEMENTS -->
+    <div id="pg-ann" class="pg">
+      <h2>Announcements</h2>
+      <button class="btn btn-green btn-full" style="margin-bottom:12px" onclick="openSheet('sh-ann')">+ Post announcement</button>
+      <div id="ann-list"></div>
+    </div>
+
+  </div>
+  <div class="tabbar">
+    <button class="tab on" onclick="showPg('home',0)"><span class="ti">🏠</span>Home</button>
+    <button class="tab" onclick="showPg('cal',1)"><span class="ti">📅</span>Calendar</button>
+    <button class="tab" onclick="showPg('chr',2)"><span class="ti">✅</span>Chores</button>
+    <button class="tab" onclick="showPg('docs',3)"><span class="ti">📄</span>Docs</button>
+    <button class="tab" onclick="showPg('ann',4)"><span class="ti">📢</span>Alerts</button>
+  </div>
+</div>
+
+</div>
+
+<!-- SHEET: ADD EVENT -->
+<div id="sh-ev" class="overlay" onclick="bgClose(event,'sh-ev')">
+<div class="sheet">
+  <div class="sheet-handle"></div>
+  <h3>Add calendar event</h3>
+  <span class="lbl">Event type (type anything or pick)</span>
+  <input class="inp" id="ev-type-input" list="ev-type-list" placeholder="e.g. Out, Away, Guest visit, Party, Chore...">
+  <datalist id="ev-type-list">
+    <option value="Out — away from apartment">
+    <option value="Away — gone for a while">
+    <option value="Back home">
+    <option value="Guest visiting">
+    <option value="Chore scheduled">
+    <option value="Rent due">
+    <option value="Kitchen sign-up">
+    <option value="Other event">
+  </datalist>
+  <span class="lbl">Who is this for? (select one or more)</span>
+  <div id="person-picker" style="display:flex;flex-wrap:wrap;gap:4px;padding:4px 0 8px"></div>
+  <div id="ev-extra-fields">
+    <span class="lbl">Guest name (if someone is coming over)</span>
+    <input class="inp" id="ev-guest-name" placeholder="e.g. Mike — leave blank if not a guest">
+  </div>
+  <span class="lbl">Notes (optional)</span>
+  <input class="inp" id="ev-notes" placeholder="Any details...">
+  <span class="lbl">Date</span>
+  <input class="inp" id="ev-date" type="date">
+  <span class="lbl">Time (optional)</span>
+  <input class="inp" id="ev-time" type="time">
+  <span class="lbl">Recurring?</span>
+  <select class="sel" id="ev-recur">
+    <option value="none">One time only</option>
+    <option value="weekly">Every week</option>
+    <option value="daily">Every day</option>
+    <option value="weekdays">Every weekday</option>
+    <option value="biweekly">Every 2 weeks</option>
+  </select>
+  <div style="display:flex;gap:8px;margin-top:6px">
+    <button class="btn btn-full" onclick="closeSheet('sh-ev')">Cancel</button>
+    <button class="btn btn-green btn-full" onclick="saveEvent()">Save</button>
+  </div>
+</div>
+</div>
+
+<!-- SHEET: ADD CHORE -->
+<div id="sh-achr" class="overlay" onclick="bgClose(event,'sh-achr')">
+<div class="sheet">
+  <div class="sheet-handle"></div>
+  <h3>Add chore</h3>
+  <span class="lbl">Chore name</span>
+  <input class="inp" id="chr-name" placeholder="e.g. Clean bathroom">
+  <span class="lbl">Assign to</span>
+  <select class="sel" id="chr-who">
+    <option>Connor</option><option>Nolan</option><option>Evan (BO)</option><option>Jack</option>
+  </select>
+  <span class="lbl">Frequency</span>
+  <select class="sel" id="chr-freq">
+    <option>Weekly</option><option>Bi-weekly</option><option>Monthly</option><option>As needed</option>
+  </select>
+  <span class="lbl">Add to calendar as recurring?</span>
+  <select class="sel" id="chr-cal">
+    <option value="yes">Yes — show on calendar</option>
+    <option value="no">No — just list it</option>
+  </select>
+  <div style="display:flex;gap:8px;margin-top:6px">
+    <button class="btn btn-full" onclick="closeSheet('sh-achr')">Cancel</button>
+    <button class="btn btn-green btn-full" onclick="addChore()">Add</button>
+  </div>
+</div>
+</div>
+
+<!-- SHEET: ADD DOC -->
+<div id="sh-adoc" class="overlay" onclick="bgClose(event,'sh-adoc')">
+<div class="sheet">
+  <div class="sheet-handle"></div>
+  <h3>Add document</h3>
+  <span class="lbl">Document name</span>
+  <input class="inp" id="doc-name" placeholder="e.g. Lease Agreement.pdf">
+  <span class="lbl">Notes (optional)</span>
+  <input class="inp" id="doc-notes" placeholder="e.g. Signed copy, expires May 2027">
+  <div style="display:flex;gap:8px;margin-top:6px">
+    <button class="btn btn-full" onclick="closeSheet('sh-adoc')">Cancel</button>
+    <button class="btn btn-green btn-full" onclick="addDoc()">Add</button>
+  </div>
+</div>
+</div>
+
+<!-- SHEET: ADD ANNOUNCEMENT -->
+<div id="sh-ann" class="overlay" onclick="bgClose(event,'sh-ann')">
+<div class="sheet">
+  <div class="sheet-handle"></div>
+  <h3>Post announcement</h3>
+  <span class="lbl">Title</span>
+  <input class="inp" id="ann-title" placeholder="e.g. Rent due Friday">
+  <span class="lbl">Message</span>
+  <textarea class="inp" id="ann-body" style="height:80px;resize:none" placeholder="Details..."></textarea>
+  <span class="lbl">Priority</span>
+  <select class="sel" id="ann-pri">
+    <option value="lo">Low — FYI</option>
+    <option value="med">Medium — Heads up</option>
+    <option value="hi">High — Important!</option>
+  </select>
+  <div style="display:flex;gap:8px;margin-top:6px">
+    <button class="btn btn-full" onclick="closeSheet('sh-ann')">Cancel</button>
+    <button class="btn btn-green btn-full" onclick="postAnn()">Post</button>
+  </div>
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var PEOPLE = ['Connor','Nolan','Evan (BO)','Jack'];
+var PCOLORS = {Connor:'#2e7d32', Nolan:'#1565c0', 'Evan (BO)':'#e65100', Jack:'#6a1b9a'};
+var PBGS = {Connor:'#e8f5e9', Nolan:'#e3f2fd', 'Evan (BO)':'#fff3e0', Jack:'#f3e5f5'};
+var MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var DAYS = ['S','M','T','W','T','F','S'];
+
+var myName = 'Connor';
+var statuses = {Connor:'home', Nolan:'home', 'Evan (BO)':'home', Jack:'home'};
+var statusSince = {};
+var NOW = new Date();
+var calYear = NOW.getFullYear();
+var calMonth = NOW.getMonth();
+var selDay = NOW.getDate();
+var events = [];
+var chores = [];
+var docs = [
+  {id:1, name:'Official Legally Binding Roommate Covenant.docx', notes:'The official roommate agreement for Rowan Blvd 7367 — all articles including kitchen, chores, guests, noise, shared resources, and conflict resolution', added:'Connor'},
+  {id:2, name:'Roommate Olympics.docx', notes:'First Annual Roommate Olympics — Connor Chin, Nolan Huber, Evan (BO) Chernyenko, Jack Chernyenko. Events: Strength, Stamina, Dexterity, Wisdom, Charisma, Intelligence', added:'Connor'},
+];
+var announcements = [];
+var nextId = 10;
+var selPeople = [];
+
+function pad(n){return n<10?'0'+n:String(n);}
+function fmtDate(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());}
+function fmtDateOffset(days){var d=new Date();d.setDate(d.getDate()+days);return fmtDate(d);}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.className='toast show';setTimeout(function(){t.className='toast';},2400);}
+function openSheet(id){document.getElementById(id).className='overlay open'; if(id==='sh-ev'){document.getElementById('ev-date').value=fmtDate(NOW); buildPersonPicker();}}
+function closeSheet(id){document.getElementById(id).className='overlay';}
+function bgClose(e,id){if(e.target===document.getElementById(id))closeSheet(id);}
+function showPg(name,idx){
+  var pgs=document.querySelectorAll('.pg'); for(var i=0;i<pgs.length;i++) pgs[i].className='pg';
+  var tabs=document.querySelectorAll('.tab'); for(var i=0;i<tabs.length;i++) tabs[i].className='tab';
+  document.getElementById('pg-'+name).className='pg on';
+  document.querySelectorAll('.tab')[idx].className='tab on';
+  if(name==='home') renderHome();
+  if(name==='cal') renderCal();
+  if(name==='chr') renderChores();
+  if(name==='docs') renderDocs();
+  if(name==='ann') renderAnn();
+}
+
+// LOCK
+document.getElementById('unlock-btn').onclick = tryUnlock;
+document.getElementById('pw-input').onkeydown = function(e){if(e.key==='Enter')tryUnlock();};
+function tryUnlock(){
+  var acct = document.getElementById('account-sel').value;
+  var pw = document.getElementById('pw-input').value;
+  if(!acct){document.getElementById('pw-err').textContent='Please select your name.'; return;}
+  if(pw === 'I love Connor'){
+    myName = acct;
+    document.getElementById('lock').style.display='none';
+    document.getElementById('app').style.display='flex';
+    document.getElementById('app').style.flexDirection='column';
+    document.getElementById('topbar-user').textContent='Logged in as '+myName;
+    document.getElementById('topbar-title').textContent='Rowan Blvd 7367 🐰';
+    buildLegend();
+    renderHome();
+    renderDocs();
+  } else {
+    document.getElementById('pw-err').textContent='Wrong password. Try again.';
+    document.getElementById('pw-input').value='';
+  }
+}
+
+// STATUS
+function setStatus(s){
+  var prev = statuses[myName];
+  statuses[myName] = s;
+  statusSince[myName] = new Date();
+  if(s !== 'home'){
+    events.push({id:++nextId, type:'status-live', who:[myName], status:s, date:fmtDate(new Date()), time:pad(new Date().getHours())+':'+pad(new Date().getMinutes()), recur:'none', label:myName+' '+s});
+  } else if(prev !== 'home'){
+    events.push({id:++nextId, type:'status-live', who:[myName], status:'home', date:fmtDate(new Date()), time:pad(new Date().getHours())+':'+pad(new Date().getMinutes()), recur:'none', label:myName+' back home'});
+  }
+  renderHome();
+  renderCal();
+  toast(s==='home'?'Welcome back!':s==='out'?'Marked as out':'Marked as away');
+}
+
+function renderStatusGrid(){
+  var h='';
+  for(var i=0;i<PEOPLE.length;i++){
+    var p=PEOPLE[i], s=statuses[p]||'home';
+    var ini=p.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase();
+    var sc=s==='home'?'st-home':s==='out'?'st-out':'st-away';
+    var sl=s==='home'?'Home':s==='out'?'Out':'Away';
+    h+='<div style="background:'+PBGS[p]+';border-radius:12px;padding:10px;border:1px solid '+PCOLORS[p]+'33">';
+    h+='<div style="display:flex;align-items:center;gap:7px;margin-bottom:5px">';
+    h+='<div style="width:26px;height:26px;border-radius:50%;background:'+PCOLORS[p]+';color:white;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700">'+ini+'</div>';
+    h+='<span style="font-size:12px;font-weight:700;color:#1a1a1a">'+p+'</span></div>';
+    h+='<span class="sb '+sc+'">'+sl+'</span></div>';
+  }
+  document.getElementById('status-grid').innerHTML=h;
+}
+
+function renderStatusTracker(){
+  var el=document.getElementById('status-tracker');
+  var s=statuses[myName];
+  if(s==='home'){el.innerHTML=''; return;}
+  var since=statusSince[myName];
+  var sinceStr=since?' since '+pad(since.getHours())+':'+pad(since.getMinutes()):'';
+  el.innerHTML='<div style="display:inline-flex;align-items:center;gap:8px;background:#fff3e0;padding:8px 12px;border-radius:10px;border:1px solid #ffcc80">'
+    +'<span style="font-size:12px;color:#e65100">📍 You are '+s+sinceStr+'</span>'
+    +'<button class="btn btn-green btn-sm" onclick="setStatus(\'home\')" style="padding:4px 10px;font-size:11px">Back home</button>'
+    +'</div>';
+}
+
+function getEventsForDay(dateStr){
+  var result=[], d=new Date(dateStr+'T12:00:00'), dow=d.getDay();
+  for(var i=0;i<events.length;i++){
+    var ev=events[i];
+    if(ev.date===dateStr){result.push(ev); continue;}
+    var evd=new Date(ev.date+'T12:00:00');
+    if(d<=evd) continue;
+    if(ev.recur==='weekly'&&evd.getDay()===dow) result.push(Object.assign({},ev,{recurring:true}));
+    else if(ev.recur==='daily') result.push(Object.assign({},ev,{recurring:true}));
+    else if(ev.recur==='weekdays'&&dow>=1&&dow<=5) result.push(Object.assign({},ev,{recurring:true}));
+    else if(ev.recur==='biweekly'){var diff=Math.round((d-evd)/(7*24*3600*1000)); if(diff%2===0&&evd.getDay()===dow) result.push(Object.assign({},ev,{recurring:true}));}
+  }
+  return result;
+}
+
+function evLabel(ev){
+  var w=Array.isArray(ev.who)?ev.who.join(', '):(ev.who||'');
+  var base=ev.label||ev.typeLabel||'Event';
+  if(ev.guestName) return ev.guestName+' visiting'+(w?' ('+w+"'s guest)":'');
+  return base+(w&&!base.includes(w)?'  — '+w:'');
+}
+
+function evColor(ev){
+  if(!ev.who||!ev.who.length) return '#888';
+  var p=Array.isArray(ev.who)?ev.who[0]:ev.who;
+  return PCOLORS[p]||'#888';
+}
+
+function renderHome(){
+  renderStatusGrid();
+  renderStatusTracker();
+  var todayStr=fmtDate(NOW), te=getEventsForDay(todayStr), el=document.getElementById('home-today');
+  if(!te.length){el.innerHTML='<div style="color:#aaa;font-size:13px">Nothing scheduled today</div>';}
+  else{
+    var h='';
+    for(var i=0;i<te.length;i++){
+      var ev=te[i];
+      h+='<div class="row"><div style="width:8px;height:8px;border-radius:50%;background:'+evColor(ev)+';flex-shrink:0"></div>';
+      h+='<div style="flex:1"><div style="font-size:13px;font-weight:600;color:#1a1a1a">'+evLabel(ev)+'</div>';
+      if(ev.time) h+='<div style="font-size:11px;color:#888">'+ev.time+(ev.recurring?' · recurring':'')+'</div>';
+      h+='</div></div>';
+    }
+    el.innerHTML=h;
+  }
+  var ael=document.getElementById('home-ann');
+  if(!announcements.length){ael.innerHTML='<div style="color:#aaa;font-size:13px">No announcements</div>'; return;}
+  var h2='';
+  for(var i=0;i<Math.min(2,announcements.length);i++){
+    var a=announcements[i];
+    h2+='<div style="padding:8px 0;border-bottom:1px solid #f5f5f5">';
+    h2+='<span class="ann-badge ann-'+a.pri+'">'+(a.pri==='hi'?'Important':a.pri==='med'?'Heads up':'FYI')+'</span>';
+    h2+='<div style="font-size:13px;font-weight:700;margin-top:2px;color:#1a1a1a">'+a.title+'</div>';
+    h2+='<div style="font-size:12px;color:#666">'+a.body+'</div></div>';
+  }
+  ael.innerHTML=h2;
+}
+
+// CALENDAR
+function prevMonth(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCal();}
+function nextMonth(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCal();}
+
+function renderCal(){
+  document.getElementById('cal-month-label').textContent=MONTHS[calMonth]+' '+calYear;
+  var h=''; for(var i=0;i<DAYS.length;i++) h+='<div class="cal-day-label">'+DAYS[i]+'</div>';
+  document.getElementById('cal-hdr').innerHTML=h;
+  var fd=new Date(calYear,calMonth,1).getDay(), dim=new Date(calYear,calMonth+1,0).getDate(), g='';
+  for(var i=0;i<fd;i++) g+='<div></div>';
+  for(var d=1;d<=dim;d++){
+    var ds=calYear+'-'+pad(calMonth+1)+'-'+pad(d);
+    var te=getEventsForDay(ds);
+    var isToday=(d===NOW.getDate()&&calMonth===NOW.getMonth()&&calYear===NOW.getFullYear());
+    var isSel=(d===selDay&&calMonth===NOW.getMonth()&&calYear===NOW.getFullYear())||(d===selDay&&!(calMonth===NOW.getMonth()&&calYear===NOW.getFullYear()));
+    var cls='cal-day'+(isToday?' today':'')+(d===selDay?' selected':'');
+    var dots='', seen={};
+    for(var i2=0;i2<te.length&&Object.keys(seen).length<3;i2++){
+      var col=evColor(te[i2]);
+      if(!seen[col]){dots+='<span class="cal-dot" style="background:'+col+'"></span>';seen[col]=true;}
+    }
+    g+='<div class="'+cls+'" onclick="pickDay('+d+')"><div class="cal-day-num">'+d+'</div>'+dots+'</div>';
+  }
+  document.getElementById('cal-grid').innerHTML=g;
+  renderDayEvents();
+}
+
+function pickDay(d){selDay=d; renderCal();}
+
+function renderDayEvents(){
+  var ds=calYear+'-'+pad(calMonth+1)+'-'+pad(selDay);
+  var isToday=(selDay===NOW.getDate()&&calMonth===NOW.getMonth()&&calYear===NOW.getFullYear());
+  document.getElementById('cal-sel-label').textContent=isToday?'Today — '+MONTHS[calMonth]+' '+selDay:MONTHS[calMonth]+' '+selDay+', '+calYear;
+  var te=getEventsForDay(ds), el=document.getElementById('day-events');
+  if(!te.length){el.innerHTML='<div style="color:#aaa;font-size:13px">Nothing here. Tap + to add.</div>'; return;}
+  var h='';
+  for(var i=0;i<te.length;i++){
+    var ev=te[i];
+    h+='<div class="row"><div style="width:10px;height:10px;border-radius:50%;background:'+evColor(ev)+';flex-shrink:0"></div>';
+    h+='<div style="flex:1"><div style="font-size:13px;font-weight:600;color:#1a1a1a">'+evLabel(ev)+'</div>';
+    if(ev.time) h+='<div style="font-size:11px;color:#888">'+ev.time+'</div>';
+    if(ev.recurring) h+='<div style="font-size:10px;color:#aaa">↻ Recurring</div>';
+    h+='</div>';
+    if(!ev.recurring) h+='<span onclick="delEvent('+ev.id+')" style="cursor:pointer;font-size:18px;color:#ccc;padding:0 4px">×</span>';
+    h+='</div>';
+  }
+  el.innerHTML=h;
+}
+
+function delEvent(id){events=events.filter(function(e){return e.id!==id;}); renderCal(); renderHome(); toast('Event removed');}
+
+function buildLegend(){
+  var h='';
+  for(var i=0;i<PEOPLE.length;i++){
+    h+='<div style="display:flex;align-items:center;gap:5px"><div style="width:10px;height:10px;border-radius:50%;background:'+PCOLORS[PEOPLE[i]]+'"></div><span style="font-size:11px">'+PEOPLE[i]+'</span></div>';
+  }
+  h+='<div style="display:flex;align-items:center;gap:5px"><div style="width:10px;height:10px;border-radius:2px;background:#888"></div><span style="font-size:11px">General</span></div>';
+  var el=document.getElementById('legend'); if(el) el.innerHTML=h;
+}
+
+function buildPersonPicker(){
+  selPeople=[];
+  var h='';
+  for(var i=0;i<PEOPLE.length;i++){
+    var p=PEOPLE[i];
+    h+='<div class="person-check" id="pc-'+i+'" style="--pc:'+PCOLORS[p]+';--pbg:'+PBGS[p]+'" onclick="togglePerson('+i+',\''+p+'\')">'+p+'</div>';
+  }
+  document.getElementById('person-picker').innerHTML=h;
+}
+
+function togglePerson(idx,name){
+  var el=document.getElementById('pc-'+idx);
+  var i=selPeople.indexOf(name);
+  if(i>=0){selPeople.splice(i,1); el.classList.remove('selected');}
+  else{selPeople.push(name); el.classList.add('selected');}
+}
+
+function saveEvent(){
+  var typeInput=document.getElementById('ev-type-input').value.trim();
+  if(!typeInput){toast('Add an event type'); return;}
+  var date=document.getElementById('ev-date').value;
+  if(!date){toast('Pick a date'); return;}
+  var guestName=document.getElementById('ev-guest-name').value.trim();
+  var notes=document.getElementById('ev-notes').value.trim();
+  var time=document.getElementById('ev-time').value;
+  var recur=document.getElementById('ev-recur').value;
+  var who=selPeople.length?selPeople.slice():[''];
+
+  var ev={id:++nextId, typeLabel:typeInput, who:who, guestName:guestName, notes:notes, date:date, time:time, recur:recur};
+  var lbl=typeInput;
+  if(guestName) lbl=guestName+' visiting';
+  else if(who.length&&who[0]) lbl=typeInput+' — '+who.join(', ');
+  ev.label=lbl;
+
+  events.push(ev);
+  closeSheet('sh-ev');
+  renderCal();
+  renderHome();
+  toast('Event added!');
+  document.getElementById('ev-type-input').value='';
+  document.getElementById('ev-guest-name').value='';
+  document.getElementById('ev-notes').value='';
+  document.getElementById('ev-time').value='';
+}
+
+// CHORES
+function renderChores(){
+  var el=document.getElementById('chore-list');
+  if(!chores.length){el.innerHTML='<div class="card" style="color:#aaa;font-size:13px;text-align:center;padding:20px">No chores yet — tap + Add chore</div>'; return;}
+  var h='';
+  for(var i=0;i<PEOPLE.length;i++){
+    var p=PEOPLE[i], pc=chores.filter(function(c){return c.who===p;});
+    if(!pc.length) continue;
+    h+='<div class="card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div style="width:10px;height:10px;border-radius:50%;background:'+PCOLORS[p]+'"></div><h3 style="margin:0;color:'+PCOLORS[p]+'">'+p+'</h3></div>';
+    for(var j=0;j<pc.length;j++){
+      var c=pc[j];
+      h+='<div class="row"><div style="flex:1"><div style="font-size:13px;color:#1a1a1a">'+c.name+'</div><div style="font-size:11px;color:#888">'+c.freq+(c.onCal?' · 📅 on calendar':'')+'</div></div>';
+      h+='<span onclick="delChore('+c.id+')" style="cursor:pointer;font-size:18px;color:#ccc;padding:0 4px">×</span></div>';
+    }
+    h+='</div>';
+  }
+  el.innerHTML=h;
+}
+
+function addChore(){
+  var name=document.getElementById('chr-name').value.trim();
+  if(!name){toast('Enter a chore name'); return;}
+  var who=document.getElementById('chr-who').value, freq=document.getElementById('chr-freq').value;
+  var toCal=document.getElementById('chr-cal').value==='yes';
+  var cid=++nextId;
+  if(toCal){
+    events.push({id:++nextId, typeLabel:'Chore: '+name, who:[who], date:fmtDate(NOW), time:'', recur:freq==='Weekly'?'weekly':freq==='Bi-weekly'?'biweekly':'none', label:name+' — '+who});
+  }
+  chores.push({id:cid, name:name, who:who, freq:freq, onCal:toCal});
+  document.getElementById('chr-name').value='';
+  closeSheet('sh-achr');
+  renderChores();
+  if(toCal) renderCal();
+  toast('Chore added!');
+}
+
+function delChore(id){chores=chores.filter(function(c){return c.id!==id;}); renderChores(); toast('Removed');}
+
+// DOCS
+function renderDocs(){
+  var el=document.getElementById('doc-list');
+  if(!docs.length){el.innerHTML='<div style="color:#aaa;font-size:13px">No documents yet</div>'; return;}
+  var h='';
+  for(var i=0;i<docs.length;i++){
+    var d=docs[i], ext=d.name.split('.').pop().toLowerCase();
+    var icon=ext==='pdf'?'📕':ext==='docx'||ext==='doc'?'📘':ext==='xlsx'?'📗':'📄';
+    h+='<div class="doc-item"><div style="font-size:26px;flex-shrink:0">'+icon+'</div>';
+    h+='<div style="flex:1"><div style="font-size:14px;font-weight:600;color:#1a1a1a">'+d.name+'</div>';
+    if(d.notes) h+='<div style="font-size:11px;color:#666;margin-top:2px">'+d.notes+'</div>';
+    h+='<div style="font-size:10px;color:#aaa;margin-top:2px">Added by '+d.added+'</div></div>';
+    h+='<span onclick="delDoc('+d.id+')" style="cursor:pointer;font-size:18px;color:#ccc;padding:0 4px">×</span></div>';
+  }
+  el.innerHTML=h;
+}
+
+function addDoc(){
+  var name=document.getElementById('doc-name').value.trim();
+  if(!name){toast('Enter a document name'); return;}
+  docs.push({id:++nextId, name:name.indexOf('.')>=0?name:name+'.docx', notes:document.getElementById('doc-notes').value.trim(), added:myName});
+  document.getElementById('doc-name').value='';
+  document.getElementById('doc-notes').value='';
+  closeSheet('sh-adoc');
+  renderDocs();
+  toast('Document added!');
+}
+
+function delDoc(id){if(!confirm('Remove this document?'))return; docs=docs.filter(function(d){return d.id!==id;}); renderDocs(); toast('Removed');}
+
+// ANNOUNCEMENTS
+function renderAnn(){
+  var el=document.getElementById('ann-list');
+  if(!announcements.length){el.innerHTML='<div class="card" style="color:#aaa;font-size:13px;text-align:center;padding:20px">No announcements yet</div>'; return;}
+  var h='';
+  for(var i=0;i<announcements.length;i++){
+    var a=announcements[i];
+    h+='<div class="card"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px"><span class="ann-badge ann-'+a.pri+'">'+(a.pri==='hi'?'Important':a.pri==='med'?'Heads up':'FYI')+'</span><span onclick="delAnn('+a.id+')" style="cursor:pointer;font-size:18px;color:#ccc">×</span></div>';
+    h+='<div style="font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:4px">'+a.title+'</div>';
+    h+='<div style="font-size:13px;color:#555;margin-bottom:6px">'+a.body+'</div>';
+    h+='<div style="font-size:11px;color:#aaa">— '+a.from+' · '+a.ts+'</div></div>';
+  }
+  el.innerHTML=h;
+}
+
+function postAnn(){
+  var title=document.getElementById('ann-title').value.trim();
+  if(!title){toast('Add a title'); return;}
+  announcements.unshift({id:++nextId, title:title, body:document.getElementById('ann-body').value.trim(), pri:document.getElementById('ann-pri').value, from:myName, ts:'Just now'});
+  document.getElementById('ann-title').value='';
+  document.getElementById('ann-body').value='';
+  closeSheet('sh-ann');
+  renderAnn();
+  renderHome();
+  toast('Announcement posted!');
+}
+
+function delAnn(id){announcements=announcements.filter(function(a){return a.id!==id;}); renderAnn(); renderHome(); toast('Removed');}
+</script>
+</body>
+</html>
